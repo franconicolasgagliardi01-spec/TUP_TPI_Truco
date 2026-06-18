@@ -1,9 +1,9 @@
-public class CartaEspaniola {
-
+public class CartaEspaniola extends Carta{
     private int numero;
     private PaloEspaniol palo;
 
-    public CartaEspaniola(int numero, PaloEspaniol palo) {
+    public CartaEspaniola(int peso, int numero, PaloEspaniol palo) {
+        super(peso);
         setNumero(numero);
         this.palo = palo;
     }
