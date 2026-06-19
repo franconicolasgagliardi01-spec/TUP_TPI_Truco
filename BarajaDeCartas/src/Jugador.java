@@ -47,4 +47,15 @@ public class Jugador <T extends Carta> {
     public void setGanador(boolean ganador) {
         this.ganador = ganador;
     }
+
+    public void sumarPuntos(int puntosASumar, int maxPuntos) {
+        this.puntos += puntosASumar;
+
+        // Si los puntos sumados superan el maxPuntos de la partida, los clava en el tope
+        if (this.puntos > maxPuntos) {
+            this.puntos = maxPuntos;
+        }
+    }
+//suma puntos al jugador controlando que no se pase del limite maxPuntos establecido en la clase Truco
+
 }

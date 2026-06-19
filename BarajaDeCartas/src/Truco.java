@@ -47,6 +47,7 @@ public class Truco {
     }
 
   public void partida() {
+      crearBarajaTruco();
       Scanner sc = new Scanner(System.in);
       while (true) {
           System.out.println("--------------------¡Bienvenido al truco argentino!--------------------");
@@ -54,10 +55,9 @@ public class Truco {
           String nombre1 = sc.nextLine();
           System.out.println("Ingrese nombre jugador 2: ");
           String nombre2 = sc.nextLine();
-          Jugador jugador1 = new Jugador(nombre1);
-          Jugador jugador2 = new Jugador(nombre2);
+          Jugador<CartaEspaniola> jugador1 = new Jugador<>(nombre1);
+          Jugador<CartaEspaniola> jugador2 = new Jugador<>(nombre2);
           int maxPuntos;
-
 
           do {
               System.out.println("Ingrese la cantidad total de puntos para ganar la partida: ");
@@ -71,6 +71,11 @@ public class Truco {
               jugador1.setCartasRepartidas(baraja.repartir(3));
               jugador2.setCartasRepartidas(baraja.repartir(3));
 
+              jugador1.setManosGanadas(0);
+              jugador2.setManosGanadas(0);
+              // Limpia los estados de ganador de la ronda anterior para iniciar la primera mano desde cero
+              jugador1.setGanador(false);
+              jugador2.setGanador(false);
 
               for (int manos = 0; manos <= 2; manos++) {
                   if (jugador1.isGanador() == false && jugador2.isGanador() == false) {
@@ -83,6 +88,18 @@ public class Truco {
                       //comienza jugador2
                       jugarMano(jugador2, jugador1);
                   }
+                  if (jugador1.getManosGanadas() == 2) {
+                      break;
+                  } else if (jugador2.getManosGanadas() == 2) {
+                      break;
+                  }
+              }
+
+              // Evalúa qué jugador tiene más manos ganadas al final de la ronda para darle el punto usando la variable maxPuntos
+              if (jugador1.getManosGanadas() > jugador2.getManosGanadas()) {
+                  jugador1.sumarPuntos(1, maxPuntos);
+              } else if (jugador2.getManosGanadas() > jugador1.getManosGanadas()) {
+                  jugador2.sumarPuntos(1, maxPuntos);
               }
           }
           ganador(jugador1,jugador2,maxPuntos);
@@ -97,7 +114,6 @@ public class Truco {
               break;
           }
       }
-
   }
 
     private <T extends Carta> void jugarMano(Jugador<T> primerJugador, Jugador<T> segundoJugador) {
@@ -142,23 +158,20 @@ public class Truco {
     }
     
   private void mostrarMano(ArrayList<CartaEspaniola> cartasJugador) {
-      for (Object a : cartasJugador) {
+      for (CartaEspaniola a : cartasJugador) {
           System.out.println(a);
       }
 //muestra mazo de cada jugador, recibe cartas de cada jugador
   }
 
-  
-  private void ganador (Jugador<T> primerJugador , Jugador<T> segundoJugador , int puntosMaximos) {
-      if (primerJugador.getPuntos >= puntosMaximos) {
-          System.out.println("--------- GANÓ " + primerJugador.getNombre + " ---------");
+    private <T extends Carta> void ganador (Jugador<?> primerJugador , Jugador<?> segundoJugador , int puntosMaximos) {
+      if (primerJugador.getPuntos() >= puntosMaximos) {
+          System.out.println("--------- GANÓ " + primerJugador.getNombre() + " ---------");
       }
   
-      if (segundoJugador.getPuntos >= puntosMaximos) {
-          System.out.println("--------- GANÓ " + segundoJugador.getNombre + " ---------");
+      if (segundoJugador.getPuntos() >= puntosMaximos) {
+          System.out.println("--------- GANÓ " + segundoJugador.getNombre() + " ---------");
       }
-
     //anuncia jugador ganador, compara al jugador con maxPuntos
   }
-
 }
