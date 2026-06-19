@@ -172,7 +172,7 @@ public class Truco {
     
   private void mostrarMano(ArrayList<CartaEspaniola> cartasJugador) {
       for (CartaEspaniola a : cartasJugador) {
-          System.out.println(a);
+          System.out.println("[" + cartasJugador.indexOf(a) +  "] "+ a);
       }
 //muestra mazo de cada jugador, recibe cartas de cada jugador
   }
