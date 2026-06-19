@@ -46,7 +46,7 @@ public class Truco {
         }
     }
 
-  public void jugar() {
+  public void partida() {
       Scanner sc = new Scanner(System.in);
       while (true) {
           System.out.println("--------------------¡Bienvenido al truco argentino!--------------------");
@@ -70,8 +70,7 @@ public class Truco {
               System.out.println("Repartiendo...");
               jugador1.setCartasRepartidas(baraja.repartir(3));
               jugador2.setCartasRepartidas(baraja.repartir(3));
-              int manosGanadasJugador1 = 0;
-              int manosGanadasJugador2 = 0;
+
 
               for (int manos = 0; manos <= 2; manos++) {
                   if (jugador1.isGanador() == false && jugador2.isGanador() == false) {
@@ -101,9 +100,46 @@ public class Truco {
 
   }
 
-  private void jugarMano(Jugador<?> primerJugador, Jugador<?> segundoJugador) {
-        //primerJugador comienza la mano
-  }
+    private <T extends Carta> void jugarMano(Jugador<T> primerJugador, Jugador<T> segundoJugador) {
+        Scanner sc = new Scanner(System.in);
+
+        // Turno del primer jugador, muestra sus cartas y le pide elegir una para tirar
+        System.out.println("Turno de: " + primerJugador.getNombre());
+        mostrarMano((ArrayList<CartaEspaniola>) primerJugador.getCartasRepartidas());
+        System.out.print("Seleccione la carta a tirar: ");
+        int indice1 = Integer.parseInt(sc.nextLine());
+        // Remueve la carta seleccionada de la mano del primer jugador y la guarda en una variable
+        T carta1 = primerJugador.getCartasRepartidas().remove(indice1);
+
+        // Turno del segundo jugador, muestra sus cartas y le pide elegir una para responder
+        System.out.println("Turno de: " + segundoJugador.getNombre());
+        mostrarMano((ArrayList<CartaEspaniola>) segundoJugador.getCartasRepartidas());
+        System.out.print("Seleccione la carta a tirar: ");
+        int indice2 = Integer.parseInt(sc.nextLine());
+        // Remueve la carta seleccionada de la mano del segundo jugador y la guarda en otra variable
+        T carta2 = segundoJugador.getCartasRepartidas().remove(indice2);
+
+        // Compara la jerarquía de las cartas usando el compareTo de la clase abstracta Carta
+        int comparacion = carta1.compareTo(carta2);
+
+        if (comparacion > 0) {
+            // Si gana el primer jugador, se le da el turno de la próxima mano y suma una mano ganada en la ronda
+            primerJugador.setGanador(true);
+            segundoJugador.setGanador(false);
+            primerJugador.ganarMano();
+        } else if (comparacion < 0) {
+            // Si gana el segundo jugador, se le da el turno de la próxima mano y suma una mano ganada en la ronda
+            primerJugador.setGanador(false);
+            segundoJugador.setGanador(true);
+            segundoJugador.ganarMano();
+        } else {
+            // En caso de empardar (empate), vuelve a tirar el mismo jugador que inició la mano y ambos suman una mano ganada
+            primerJugador.setGanador(true);
+            segundoJugador.setGanador(false);
+            primerJugador.ganarMano();
+            segundoJugador.ganarMano();
+        }
+    }
 
   private void mostrarMano(ArrayList<CartaEspaniola> cartasJugador) {
         //muestra mazo de cada jugador, recibe cartas de cada jugador
