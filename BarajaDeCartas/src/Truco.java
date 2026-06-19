@@ -125,7 +125,6 @@ public class Truco {
 
     private <T extends Carta> void jugarMano(Jugador<T> primerJugador, Jugador<T> segundoJugador) {
         Scanner sc = new Scanner(System.in);
-
         // Turno del primer jugador, muestra sus cartas y le pide elegir una para tirar
         System.out.println("Turno de: " + primerJugador.getNombre());
         mostrarMano((ArrayList<CartaEspaniola>) primerJugador.getCartasRepartidas());

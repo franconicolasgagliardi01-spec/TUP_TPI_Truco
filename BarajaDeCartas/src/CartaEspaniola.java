@@ -25,7 +25,4 @@ public class CartaEspaniola extends Carta{
     public String toString() {
         return  numero + " de " + palo;
     }
-    
-    
-    
 }
