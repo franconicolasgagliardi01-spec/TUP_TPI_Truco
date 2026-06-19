@@ -98,8 +98,15 @@ public class Truco {
               // Evalúa qué jugador tiene más manos ganadas al final de la ronda para darle el punto usando la variable maxPuntos
               if (jugador1.getManosGanadas() > jugador2.getManosGanadas()) {
                   jugador1.sumarPuntos(1, maxPuntos);
+                  System.out.println("");
+                  System.out.println("-------- " + jugador1.getNombre() + " gano la ronda --------");
+                  System.out.println("");
+                  
               } else if (jugador2.getManosGanadas() > jugador1.getManosGanadas()) {
                   jugador2.sumarPuntos(1, maxPuntos);
+                  System.out.println("");
+                  System.out.println("-------- " + jugador2.getNombre() + " gano la ronda --------");
+                  System.out.println("");
               }
           }
           ganador(jugador1,jugador2,maxPuntos);
@@ -126,7 +133,10 @@ public class Truco {
         int indice1 = Integer.parseInt(sc.nextLine());
         // Remueve la carta seleccionada de la mano del primer jugador y la guarda en una variable
         T carta1 = primerJugador.getCartasRepartidas().remove(indice1);
-
+        // Muestra que carta tiro el jugador1
+        System.out.println( primerJugador.getNombre() + " tiro un " + carta1);
+        System.out.println("");
+        
         // Turno del segundo jugador, muestra sus cartas y le pide elegir una para responder
         System.out.println("Turno de: " + segundoJugador.getNombre());
         mostrarMano((ArrayList<CartaEspaniola>) segundoJugador.getCartasRepartidas());
@@ -134,7 +144,10 @@ public class Truco {
         int indice2 = Integer.parseInt(sc.nextLine());
         // Remueve la carta seleccionada de la mano del segundo jugador y la guarda en otra variable
         T carta2 = segundoJugador.getCartasRepartidas().remove(indice2);
-
+        // Muestra que carta tiro el jugador1
+        System.out.println( segundoJugador.getNombre() + " tiro un " + carta2);
+        System.out.println("");
+        
         // Compara la jerarquía de las cartas usando el compareTo de la clase abstracta Carta
         int comparacion = carta1.compareTo(carta2);
 
@@ -166,11 +179,15 @@ public class Truco {
 
     private <T extends Carta> void ganador (Jugador<?> primerJugador , Jugador<?> segundoJugador , int puntosMaximos) {
       if (primerJugador.getPuntos() >= puntosMaximos) {
-          System.out.println("--------- GANÓ " + primerJugador.getNombre() + " ---------");
+          System.out.println("");
+          System.out.println("--------- GANO " + primerJugador.getNombre() + " ---------");
+          System.out.println("");
       }
   
       if (segundoJugador.getPuntos() >= puntosMaximos) {
-          System.out.println("--------- GANÓ " + segundoJugador.getNombre() + " ---------");
+          System.out.println("");
+          System.out.println("--------- GANO " + segundoJugador.getNombre() + " ---------");
+          System.out.println("");
       }
     //anuncia jugador ganador, compara al jugador con maxPuntos
   }
