@@ -85,7 +85,7 @@ public class Truco {
                   }
               }
           }
-          ganador();
+          ganador(jugador1,jugador2,maxPuntos);
           String opcion;
           do {
               System.out.println("¿Desea volver a jugar? S/N");
@@ -140,18 +140,25 @@ public class Truco {
             segundoJugador.ganarMano();
         }
     }
-
+    
   private void mostrarMano(ArrayList<CartaEspaniola> cartasJugador) {
-        //muestra mazo de cada jugador, recibe cartas de cada jugador
+      for (Object a : cartasJugador) {
+          System.out.println(a);
+      }
+//muestra mazo de cada jugador, recibe cartas de cada jugador
   }
 
-  private int envido(ArrayList<CartaEspaniola> cartasJugador1, ArrayList<CartaEspaniola> cartasJugador2) {
-        return 0; // recibe cartas de los dos jugadores, devuelve 1 si gana jugador1 o 2 si gana jugador2
-      //armar compareTo para lógica envido (sugerencia)
-  }
+  
+  private void ganador (Jugador<T> primerJugador , Jugador<T> segundoJugador , int puntosMaximos) {
+      if (primerJugador.getPuntos >= puntosMaximos) {
+          System.out.println("--------- GANÓ " + primerJugador.getNombre + " ---------");
+      }
+  
+      if (segundoJugador.getPuntos >= puntosMaximos) {
+          System.out.println("--------- GANÓ " + segundoJugador.getNombre + " ---------");
+      }
 
-  private void ganador () {
-      //anuncia jugador ganador, compara al jugador con maxPuntos
+    //anuncia jugador ganador, compara al jugador con maxPuntos
   }
 
 }
