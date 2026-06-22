@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Truco {
     private Baraja<CartaEspaniola> baraja = new Baraja<>();
+    Scanner sc = new Scanner(System.in);
 
     public void crearBarajaTruco() { // Funcion que se encarga de crear la baraja
         for (CartaEspaniola.PaloEspaniol palo : CartaEspaniola.PaloEspaniol.values()) { // Con values() vario en funcion de los palos
@@ -124,28 +125,8 @@ public class Truco {
   }
 
     private <T extends Carta> void jugarMano(Jugador<T> primerJugador, Jugador<T> segundoJugador) {
-        Scanner sc = new Scanner(System.in);
-        // Turno del primer jugador, muestra sus cartas y le pide elegir una para tirar
-        System.out.println("Turno de: " + primerJugador.getNombre());
-        mostrarMano((ArrayList<CartaEspaniola>) primerJugador.getCartasRepartidas());
-        System.out.print("Seleccione la carta a tirar: ");
-        int indice1 = Integer.parseInt(sc.nextLine());
-        // Remueve la carta seleccionada de la mano del primer jugador y la guarda en una variable
-        T carta1 = primerJugador.getCartasRepartidas().remove(indice1);
-        // Muestra que carta tiro el jugador1
-        System.out.println( primerJugador.getNombre() + " tiro un " + carta1);
-        System.out.println("");
-        
-        // Turno del segundo jugador, muestra sus cartas y le pide elegir una para responder
-        System.out.println("Turno de: " + segundoJugador.getNombre());
-        mostrarMano((ArrayList<CartaEspaniola>) segundoJugador.getCartasRepartidas());
-        System.out.print("Seleccione la carta a tirar: ");
-        int indice2 = Integer.parseInt(sc.nextLine());
-        // Remueve la carta seleccionada de la mano del segundo jugador y la guarda en otra variable
-        T carta2 = segundoJugador.getCartasRepartidas().remove(indice2);
-        // Muestra que carta tiro el jugador1
-        System.out.println( segundoJugador.getNombre() + " tiro un " + carta2);
-        System.out.println("");
+        Carta carta1 = turno(primerJugador);
+        Carta carta2 = turno(segundoJugador);
         
         // Compara la jerarquía de las cartas usando el compareTo de la clase abstracta Carta
         int comparacion = carta1.compareTo(carta2);
@@ -167,6 +148,29 @@ public class Truco {
             primerJugador.ganarMano();
             segundoJugador.ganarMano();
         }
+    }
+
+    private <T extends Carta> Carta turno(Jugador<T> jugador){
+        int indice = -1;
+        do {
+            try {
+                // Turno del primer jugador, muestra sus cartas y le pide elegir una para tirar
+                System.out.println("Turno de: " + jugador.getNombre());
+                mostrarMano((ArrayList<CartaEspaniola>) jugador.getCartasRepartidas());
+                System.out.print("Seleccione la carta a tirar: ");
+                indice = Integer.parseInt(sc.nextLine());
+            }catch (NumberFormatException nfe){
+                System.out.println("Debe ingresar un numero entero válido...");
+            }
+        }while (indice < 0 || indice > jugador.getCartasRepartidas().size() - 1);
+
+        // Remueve la carta seleccionada de la mano del primer jugador y la guarda en una variable
+        T carta = jugador.getCartasRepartidas().remove(indice);
+        // Muestra que carta tiro el jugador1
+        System.out.println( jugador.getNombre() + " tiro un " + carta);
+        System.out.println("");
+
+        return carta;
     }
     
   private void mostrarMano(ArrayList<CartaEspaniola> cartasJugador) {
